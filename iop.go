@@ -6,13 +6,21 @@ import (
 	"os"
 	"reflect"
 	"sync"
+
+	"github.com/hlcfan/iop/inspector"
 )
 
 var std = New()
 
 type IOPrinter struct {
-	mutex sync.Mutex
-	Out   io.Writer
+	mutex      sync.Mutex
+	Out        io.Writer
+	inspectors []Inspectable
+}
+
+type Inspectable interface {
+	Applicable(reflect.Type, reflect.Value) bool
+	Inspect(io.Writer, reflect.Type, reflect.Value)
 }
 
 func SetOutput(out io.Writer) {
@@ -30,6 +38,10 @@ func Inspect(variable interface{}) {
 func New() *IOPrinter {
 	return &IOPrinter{
 		Out: os.Stdout,
+		inspectors: []Inspectable{
+			inspector.NewSliceInspector(),
+			inspector.NewIntegerInspector(),
+		},
 	}
 }
 
@@ -40,15 +52,31 @@ func (p *IOPrinter) SetOutput(out io.Writer) {
 }
 
 func (p *IOPrinter) Inspect(variable interface{}) {
+	var inspector Inspectable
+
 	t := reflect.TypeOf(variable)
 	v := reflect.ValueOf(variable)
-	// fmt.Printf("===Kind: %#v\n", t.Kind() == reflect.Slice)
-	switch t.Kind() {
-	case reflect.Slice:
-		p.inspectSlice(t, v)
-	case reflect.Int:
-		// p.inspectSlice(t, v)
+
+	for _, i := range p.inspectors {
+		if i.Applicable(t, v) {
+			fmt.Println("===Found")
+			inspector = i
+			break
+		}
 	}
+
+	if inspector == nil {
+		return
+	}
+
+	inspector.Inspect(p.Out, t, v)
+	// // fmt.Printf("===Kind: %#v\n", t.Kind() == reflect.Slice)
+	// switch t.Kind() {
+	// case reflect.Slice:
+	// 	p.inspectSlice(t, v)
+	// case reflect.Int:
+	// 	// p.inspectSlice(t, v)
+	// }
 }
 
 func (p *IOPrinter) inspectSlice(t reflect.Type, v reflect.Value) {
