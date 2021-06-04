@@ -13,12 +13,11 @@ func NewSliceInspector() *SliceInspector {
 	return &SliceInspector{}
 }
 
-func (r *SliceInspector) Applicable(t reflect.Type, _ reflect.Value) bool {
-	return t.Kind() == reflect.Slice
+func (r *SliceInspector) Applicable(t reflect.Type, v reflect.Value) bool {
+	return v.Kind() == reflect.Slice
 }
 
 func (r *SliceInspector) Inspect(out io.Writer, t reflect.Type, v reflect.Value) {
-	fmt.Println("===================")
 	// fmt.Println("===Ele type: ", t)
 	// fmt.Println("===Ele type: ", t.Elem())
 	fmt.Fprintf(out, "%s {\n", t)
