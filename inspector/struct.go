@@ -17,9 +17,6 @@ func (r *StructInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 }
 
 func (r *StructInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
-	// if level > 0 {
-	level++
-	// }
 	var tabs string
 	// TODO: may use buffer
 	for i := 0; i < level; i++ {
@@ -27,18 +24,20 @@ func (r *StructInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, leve
 	}
 
 	var structType string
+	indentation := "\t"
 	if level == 0 {
 		structType = v.Type().String()
+		indentation = ""
 	}
 
-	fmt.Fprintf(ioP.Output(), "\t%v{\n", structType)
+	fmt.Fprintf(ioP.Output(), "%s%v{\n", indentation, structType)
 	for j := 0; j < v.NumField(); j++ {
 		typeField := v.Type().Field(j)
 		valueField := v.Field(j)
 		fmt.Fprintf(ioP.Output(), "%s\t%s:", tabs, typeField.Name)
 		// fmt.Printf("===Value Field: %#v\n", valueField)
 		// fmt.Fprintf(ioP.Output(), "\t")
-		ioP.Inspect(valueField.Interface(), level+0)
+		ioP.Inspect(valueField.Interface(), level+1)
 	}
 
 	var comma string
