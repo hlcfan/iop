@@ -20,7 +20,7 @@ type IOPrinter struct {
 
 type Inspectable interface {
 	Applicable(reflect.Type, reflect.Value) bool
-	Inspect(inspector.IOP, reflect.Type, reflect.Value)
+	Inspect(inspector.IOP, reflect.Type, reflect.Value, int)
 }
 
 func SetOutput(out io.Writer) {
@@ -32,7 +32,7 @@ func SetOutput(out io.Writer) {
 // }
 
 func Inspect(variable interface{}) {
-	std.Inspect(variable)
+	std.Inspect(variable, 0)
 }
 
 func New() *IOPrinter {
@@ -43,6 +43,7 @@ func New() *IOPrinter {
 			inspector.NewIntegerInspector(),
 			inspector.NewStructInspector(),
 			inspector.NewStringInspector(),
+			inspector.NewBoolInspector(),
 		},
 	}
 }
@@ -53,7 +54,7 @@ func (p *IOPrinter) SetOutput(out io.Writer) {
 	p.Out = out
 }
 
-func (p *IOPrinter) Inspect(variable interface{}) {
+func (p *IOPrinter) Inspect(variable interface{}, level int) {
 	var inspector Inspectable
 
 	t := reflect.TypeOf(variable)
@@ -75,7 +76,7 @@ func (p *IOPrinter) Inspect(variable interface{}) {
 
 	// Should be pass in IOPrinter to cater case for nested object, so that
 	// `Inspect` can be called nestedly.
-	inspector.Inspect(p, t, v)
+	inspector.Inspect(p, t, v, level)
 	// // fmt.Printf("===Kind: %#v\n", t.Kind() == reflect.Slice)
 	// switch t.Kind() {
 	// case reflect.Slice:

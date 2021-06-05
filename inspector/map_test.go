@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/hlcfan/iop"
 	"github.com/hlcfan/iop/inspector"
 )
 
@@ -18,28 +19,25 @@ func TestInspectMap(t *testing.T) {
 	t.Run("It inspects slice", func(t *testing.T) {
 		var output bytes.Buffer
 
-		// person := map[string]interface{}{}
-		// person["name"] = "alex"
-		// person["age"] = 20
-		// person["father"] = false
+		maps := map[string]interface{}{}
+		maps["name"] = "alex"
+		maps["age"] = 20
+		maps["father"] = false
 
-		people := []Person{
-			{
-				ID:    1,
-				Name:  "alex",
-				Phone: "12345678",
-			},
-		}
-
-		maps := map[string]Person{
-			"alex": people[0],
-		}
+		// maps := map[string]Person{
+		// 	"alex": {
+		// 		ID:    1,
+		// 		Name:  "alex",
+		// 		Phone: "12345678",
+		// 	},
+		// }
 
 		vType := reflect.TypeOf(maps)
 		vValue := reflect.ValueOf(maps)
 
+		ioP := iop.New()
 		mapInspector := inspector.NewMapInspector()
-		mapInspector.Inspect(&output, vType, vValue)
+		mapInspector.Inspect(ioP, vType, vValue, 0)
 
 		expected := "map[string]interface {} {\n\t\t\tname:\talex,\n\t\t\tage:\t20,\n\t\t\tfather:\tfalse,\n}\n"
 		got := output.String()

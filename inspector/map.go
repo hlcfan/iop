@@ -2,7 +2,6 @@ package inspector
 
 import (
 	"fmt"
-	"io"
 	"reflect"
 )
 
@@ -17,28 +16,20 @@ func (r *MapInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 	return v.Kind() == reflect.Map
 }
 
-func (r *MapInspector) Inspect(out io.Writer, t reflect.Type, v reflect.Value) {
-	fmt.Println("===================")
-	// fmt.Println("===Ele type: ", t)
-	// fmt.Println("===Ele type: ", t.Elem())
-	fmt.Fprintf(out, "%s {\n", t)
-	for _, e := range v.MapKeys() {
-		v := v.MapIndex(e)
-		fmt.Fprintf(out, "\t\t\t%s:\t%v,\n", e, v)
-		// switch t := v.Interface().(type) {
-		// case int:
-		// 	fmt.Fprintln(out, e, t)
-		// case string:
-		// 	fmt.Fprintln(out, e, t)
-		// case bool:
-		// 	fmt.Fprintln(out, e, t)
-		// default:
-		// 	fmt.Fprintln(out, "not found")
-		// }
+func (r *MapInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
+	var tabs string
+	// TODO: may use buffer
+	for i := 0; i < level; i++ {
+		tabs += "\t"
+	}
+	fmt.Fprintf(ioP.Output(), "%s%s {\n", tabs, t)
+	for _, key := range v.MapKeys() {
+		v := v.MapIndex(key)
+		// fmt.Printf("===Ele: %#v\n", e)
+		// fmt.Fprintf(ioP.Output(), "%s\t%s:\t%v,\n", tabs, e, v)
+		fmt.Fprintf(ioP.Output(), "%s\t%s:", tabs, key)
+		ioP.Inspect(v.Interface(), level+1)
 	}
 
-	fmt.Fprintln(out, "}")
-
-	// fmt.Printf("%#v\n", v)
-	fmt.Println("===================")
+	fmt.Fprintln(ioP.Output(), "}")
 }

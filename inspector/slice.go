@@ -16,10 +16,14 @@ func (r *SliceInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 	return v.Kind() == reflect.Slice
 }
 
-func (r *SliceInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value) {
+func (r *SliceInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
 	// fmt.Println("===Ele type: ", t)
 	// fmt.Println("===Ele type: ", t.Elem())
-	fmt.Fprintf(ioP.Output(), "%s {\n", t)
+	var tabs string
+	for i := 0; i < level; i++ {
+		tabs += "\t"
+	}
+	fmt.Fprintf(ioP.Output(), "%s%s {\n", tabs, t)
 	for i := 0; i < v.Len(); i++ {
 		ele := v.Index(i)
 		// tt := reflect.TypeOf(ele)
@@ -27,7 +31,7 @@ func (r *SliceInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value) {
 		// fmt.Printf("===Ele: %#v\n", ele)
 		// fmt.Fprintln(ioP.Output(), "\t\t{")
 		// Interate each struct field
-		ioP.Inspect(ele.Interface())
+		ioP.Inspect(ele.Interface(), level+1)
 		// fmt.Fprintln(ioP.Output(), "\t\t},")
 	}
 

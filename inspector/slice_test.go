@@ -33,7 +33,7 @@ func TestInspectSlice(t *testing.T) {
 		ioP := iop.New()
 		// ioP.SetOutput(&output)
 		sliceInspector := inspector.NewSliceInspector()
-		sliceInspector.Inspect(ioP, vType, vValue)
+		sliceInspector.Inspect(ioP, vType, vValue, 0)
 
 		expected := "[]inspector_test.Person {\n\t\t{\n\t\t\tID:\t1,\n\t\t\tName:\talex,\n\t\t\tPhone:\t12345678,\n\t\t},\n}\n"
 		got := output.String()
