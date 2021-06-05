@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/hlcfan/iop"
 	"github.com/hlcfan/iop/inspector"
 )
 
@@ -29,8 +30,10 @@ func TestInspectSlice(t *testing.T) {
 		vType := reflect.TypeOf(people)
 		vValue := reflect.ValueOf(people)
 
+		ioP := iop.New()
+		// ioP.SetOutput(&output)
 		sliceInspector := inspector.NewSliceInspector()
-		sliceInspector.Inspect(&output, vType, vValue)
+		sliceInspector.Inspect(ioP, vType, vValue)
 
 		expected := "[]inspector_test.Person {\n\t\t{\n\t\t\tID:\t1,\n\t\t\tName:\talex,\n\t\t\tPhone:\t12345678,\n\t\t},\n}\n"
 		got := output.String()

@@ -2,7 +2,6 @@ package inspector
 
 import (
 	"fmt"
-	"io"
 	"reflect"
 )
 
@@ -30,6 +29,6 @@ func (r *IntegerInspector) Applicable(t reflect.Type, _ reflect.Value) bool {
 	return false
 }
 
-func (r *IntegerInspector) Inspect(out io.Writer, t reflect.Type, v reflect.Value) {
-	fmt.Fprintf(out, "%d\n", v.Int())
+func (r *IntegerInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value) {
+	fmt.Fprintf(ioP.Output(), "%d\n", v.Int())
 }
