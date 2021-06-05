@@ -23,12 +23,24 @@ func (r *StructInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, leve
 		tabs += "\t"
 	}
 
-	fmt.Fprintf(ioP.Output(), "%s{\n", tabs)
+	var structType string
+	if level == 0 {
+		structType = v.Type().String()
+	}
+
+	fmt.Fprintf(ioP.Output(), "%s%v{\n", tabs, structType)
 	for j := 0; j < v.NumField(); j++ {
 		typeField := v.Type().Field(j)
 		valueField := v.Field(j)
 		fmt.Fprintf(ioP.Output(), "%s\t%s:", tabs, typeField.Name)
+		// fmt.Printf("===Value Field: %#v\n", valueField)
 		ioP.Inspect(valueField.Interface(), level+1)
 	}
-	fmt.Fprintf(ioP.Output(), "%s},\n", tabs)
+
+	var comma string
+	if level > 0 {
+		comma = ","
+	}
+
+	fmt.Fprintf(ioP.Output(), "%s}%s\n", tabs, comma)
 }

@@ -40,7 +40,9 @@ func New() *IOPrinter {
 		Out: os.Stdout,
 		inspectors: []Inspectable{
 			inspector.NewSliceInspector(),
+			inspector.NewMapInspector(),
 			inspector.NewIntegerInspector(),
+			inspector.NewTimeInspector(),
 			inspector.NewStructInspector(),
 			inspector.NewStringInspector(),
 			inspector.NewBoolInspector(),

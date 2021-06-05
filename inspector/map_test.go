@@ -16,7 +16,7 @@ type Person struct {
 }
 
 func TestInspectMap(t *testing.T) {
-	t.Run("It inspects slice", func(t *testing.T) {
+	t.Run("It inspects map", func(t *testing.T) {
 		var output bytes.Buffer
 
 		maps := map[string]interface{}{}
@@ -36,10 +36,11 @@ func TestInspectMap(t *testing.T) {
 		vValue := reflect.ValueOf(maps)
 
 		ioP := iop.New()
+		ioP.SetOutput(&output)
 		mapInspector := inspector.NewMapInspector()
 		mapInspector.Inspect(ioP, vType, vValue, 0)
 
-		expected := "map[string]interface {} {\n\t\t\tname:\talex,\n\t\t\tage:\t20,\n\t\t\tfather:\tfalse,\n}\n"
+		expected := "map[string]interface {} {\n\tname:\talex,\n\tage:\t20,\n\tfather:\tfalse,\n}\n"
 		got := output.String()
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)

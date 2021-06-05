@@ -17,13 +17,11 @@ func (r *SliceInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 }
 
 func (r *SliceInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
-	// fmt.Println("===Ele type: ", t)
-	// fmt.Println("===Ele type: ", t.Elem())
 	var tabs string
 	for i := 0; i < level; i++ {
 		tabs += "\t"
 	}
-	fmt.Fprintf(ioP.Output(), "%s%s {\n", tabs, t)
+	fmt.Fprintf(ioP.Output(), "%s%s{\n", tabs, t)
 	for i := 0; i < v.Len(); i++ {
 		ele := v.Index(i)
 		// tt := reflect.TypeOf(ele)
@@ -35,5 +33,5 @@ func (r *SliceInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level
 		// fmt.Fprintln(ioP.Output(), "\t\t},")
 	}
 
-	fmt.Fprintln(ioP.Output(), "}")
+	fmt.Fprintf(ioP.Output(), "%s}\n", tabs)
 }

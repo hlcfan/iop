@@ -31,9 +31,9 @@ func TestInspectStruct(t *testing.T) {
 		ioP := iop.New()
 		ioP.SetOutput(&output)
 		structInspector := inspector.NewStructInspector()
-		structInspector.Inspect(ioP, vType, vValue)
+		structInspector.Inspect(ioP, vType, vValue, 0)
 
-		expected := "inspector_test.person {\n\t\t\tID:\t1,\n\t\t\tName:\talex,\n\t\t\tPhone:\t12345678,\n\t\t},\n}\n"
+		expected := "inspector_test.person{\n\tID:\t1,\n\tName:\talex,\n\tPhone:\t12345678,\n}\n"
 		got := output.String()
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)

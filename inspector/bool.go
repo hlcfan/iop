@@ -20,5 +20,5 @@ func (r *BoolInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level 
 	for i := 0; i < level; i++ {
 		tabs += "\t"
 	}
-	fmt.Fprintf(ioP.Output(), "%s%t\n", tabs, v.Bool())
+	fmt.Fprintf(ioP.Output(), "%s%t,\n", tabs, v.Bool())
 }
