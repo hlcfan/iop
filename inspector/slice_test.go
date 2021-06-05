@@ -36,9 +36,9 @@ func TestInspectSlice(t *testing.T) {
 		sliceInspector := inspector.NewSliceInspector()
 		sliceInspector.Inspect(ioP, vType, vValue, 0)
 
-		expected := "[]inspector_test.person{\n\t{\n\t\tID:\t\t1,\n\t\tName:\t\talex,\n\t\tPhone:\t\t12345678,\n\t},\n}\n"
+		expected := "[]inspector_test.person{\n\t{\n\t\tID:\t1,\n\t\tName:\talex,\n\t\tPhone:\t12345678,\n\t},\n}\n"
 		got := output.String()
-		fmt.Printf("===: %#v\n", got)
+		fmt.Printf("===: %v\n", got)
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)
 		}

@@ -23,7 +23,7 @@ func TestInspectBool(t *testing.T) {
 		sliceInspector := inspector.NewBoolInspector()
 		sliceInspector.Inspect(ioP, vType, vValue, 0)
 
-		expected := "true,\n"
+		expected := "\ttrue,\n"
 		got := output.String()
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)

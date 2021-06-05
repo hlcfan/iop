@@ -23,7 +23,7 @@ func TestInspectInteger(t *testing.T) {
 		sliceInspector := inspector.NewIntegerInspector()
 		sliceInspector.Inspect(ioP, vType, vValue, 0)
 
-		expected := "1,\n"
+		expected := "\t1,\n"
 		got := output.String()
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)

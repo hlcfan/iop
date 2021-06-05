@@ -23,7 +23,7 @@ func TestInspectString(t *testing.T) {
 		sliceInspector := inspector.NewStringInspector()
 		sliceInspector.Inspect(ioP, vType, vValue, 0)
 
-		expected := "Howdy,\n"
+		expected := "\tHowdy,\n"
 		got := output.String()
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)

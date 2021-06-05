@@ -22,7 +22,7 @@ func TestInspectMap(t *testing.T) {
 		maps := map[string]interface{}{}
 		maps["name"] = "alex"
 		maps["age"] = 20
-		maps["father"] = false
+		maps["graduated"] = false
 
 		// maps := map[string]Person{
 		// 	"alex": {
@@ -40,10 +40,11 @@ func TestInspectMap(t *testing.T) {
 		mapInspector := inspector.NewMapInspector()
 		mapInspector.Inspect(ioP, vType, vValue, 0)
 
-		expected := "map[string]interface {} {\n\tname:\talex,\n\tage:\t20,\n\tfather:\tfalse,\n}\n"
+		//TODO: can be flaky, due to map doesn't maintain order
+		expected := " map[string]interface {} {\n\tname:\talex,\n\tage:\t20,\n\tgraduated:\tfalse,\n}\n"
 		got := output.String()
 		if got != expected {
-			t.Errorf("Expect: %s, but got: %s", expected, got)
+			t.Errorf("Expect: \n%v, but got: \n%v", expected, got)
 		}
 	})
 }

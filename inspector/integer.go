@@ -30,9 +30,5 @@ func (r *IntegerInspector) Applicable(t reflect.Type, _ reflect.Value) bool {
 }
 
 func (r *IntegerInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
-	var tabs string
-	for i := 0; i < level; i++ {
-		tabs += "\t"
-	}
-	fmt.Fprintf(ioP.Output(), "%s%d,\n", tabs, v.Int())
+	fmt.Fprintf(ioP.Output(), "\t%d,\n", v.Int())
 }
