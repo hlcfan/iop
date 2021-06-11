@@ -11,7 +11,7 @@ func NewIntegerInspector() *IntegerInspector {
 	return &IntegerInspector{}
 }
 
-func (r *IntegerInspector) Applicable(t reflect.Type, _ reflect.Value) bool {
+func (r *IntegerInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 	integerTypes := []reflect.Kind{
 		reflect.Int,
 		reflect.Int8,
@@ -21,7 +21,7 @@ func (r *IntegerInspector) Applicable(t reflect.Type, _ reflect.Value) bool {
 	}
 
 	for _, kind := range integerTypes {
-		if t.Kind() == kind {
+		if v.Kind() == kind {
 			return true
 		}
 	}
