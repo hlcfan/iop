@@ -29,7 +29,7 @@ func (r *SliceInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level
 		// fmt.Printf("===Ele: %#v\n", ele)
 		// fmt.Fprintln(ioP.Output(), "\t\t{")
 		// Interate each struct field
-		ioP.Inspect(ele.Interface(), level+1)
+		ioP.Inspect(ele, level+1)
 		// fmt.Fprintln(ioP.Output(), "\t\t},")
 	}
 

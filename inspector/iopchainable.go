@@ -1,8 +1,11 @@
 package inspector
 
-import "io"
+import (
+	"io"
+	"reflect"
+)
 
 type IOP interface {
-	Inspect(variable interface{}, level int)
+	Inspect(variable reflect.Value, level int)
 	Output() io.Writer
 }

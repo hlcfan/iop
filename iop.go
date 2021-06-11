@@ -16,6 +16,7 @@ type IOPrinter struct {
 	mutex      sync.Mutex
 	Out        io.Writer
 	inspectors []Inspectable
+	maxDepth   int
 }
 
 type Inspectable interface {
@@ -32,12 +33,14 @@ func SetOutput(out io.Writer) {
 // }
 
 func Inspect(variable interface{}) {
-	std.Inspect(variable, 0)
+	v := reflect.ValueOf(variable)
+	std.Inspect(v, 0)
 }
 
 func New() *IOPrinter {
 	return &IOPrinter{
-		Out: os.Stdout,
+		Out:      os.Stdout,
+		maxDepth: 1,
 		inspectors: []Inspectable{
 			inspector.NewSliceInspector(),
 			inspector.NewMapInspector(),
@@ -46,6 +49,7 @@ func New() *IOPrinter {
 			inspector.NewStructInspector(),
 			inspector.NewStringInspector(),
 			inspector.NewBoolInspector(),
+			// inspector.NewFallbackInspector(),
 		},
 	}
 }
@@ -56,13 +60,19 @@ func (p *IOPrinter) SetOutput(out io.Writer) {
 	p.Out = out
 }
 
-func (p *IOPrinter) Inspect(variable interface{}, level int) {
+func (p *IOPrinter) Inspect(variable reflect.Value, level int) {
+	if level > p.maxDepth {
+		return
+	}
+
 	var inspector Inspectable
 
-	t := reflect.TypeOf(variable)
-	v := reflect.ValueOf(variable)
+	// v := reflect.ValueOf(variable)
+	v := variable
+	t := reflect.TypeOf(v)
 
 	// fmt.Printf("===To inspect: %#v\n", variable)
+	// fmt.Printf("===To inspect kind: %s\n", v.Kind())
 	for _, i := range p.inspectors {
 		if i.Applicable(t, v) {
 			// fmt.Println("===Found")
@@ -87,6 +97,7 @@ func (p *IOPrinter) Inspect(variable interface{}, level int) {
 	// 	// p.inspectSlice(t, v)
 	// }
 }
+
 func (p *IOPrinter) Output() io.Writer {
 	return p.Out
 }

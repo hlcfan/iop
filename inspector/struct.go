@@ -5,6 +5,18 @@ import (
 	"reflect"
 )
 
+type flag uintptr
+
+var (
+	// flagRO indicates whether the value field of a reflect.Value
+	// is read-only.
+	flagRO flag
+
+	// flagAddr indicates whether the address of the reflect.Value's
+	// value may be taken.
+	flagAddr flag
+)
+
 type StructInspector struct {
 }
 
@@ -33,11 +45,11 @@ func (r *StructInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, leve
 	fmt.Fprintf(ioP.Output(), "%s%v{\n", indentation, structType)
 	for j := 0; j < v.NumField(); j++ {
 		typeField := v.Type().Field(j)
-		valueField := v.Field(j)
 		fmt.Fprintf(ioP.Output(), "%s\t%s:", tabs, typeField.Name)
-		// fmt.Printf("===Value Field: %#v\n", valueField)
-		// fmt.Fprintf(ioP.Output(), "\t")
-		ioP.Inspect(valueField.Interface(), level+1)
+
+		// key := typeField.Name
+		field := v.Field(j)
+		ioP.Inspect(field, level+1)
 	}
 
 	var comma string
