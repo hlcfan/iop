@@ -2,7 +2,6 @@ package inspector_test
 
 import (
 	"bytes"
-	"fmt"
 	"reflect"
 	"testing"
 
@@ -38,7 +37,7 @@ func TestInspectSlice(t *testing.T) {
 
 		expected := "[]inspector_test.person{\n\t{\n\t\tID:\t1,\n\t\tName:\talex,\n\t\tPhone:\t12345678,\n\t},\n}\n"
 		got := output.String()
-		fmt.Printf("===: %v\n", got)
+		// fmt.Printf("===: %v\n", got)
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)
 		}

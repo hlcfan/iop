@@ -41,10 +41,23 @@ func TestInspectMap(t *testing.T) {
 		mapInspector.Inspect(ioP, vType, vValue, 0)
 
 		//TODO: can be flaky, due to map doesn't maintain order
-		expected := " map[string]interface {} {\n\tname:\talex,\n\tage:\t20,\n\tgraduated:\tfalse,\n}\n"
+		expectedCases := []string{
+			" map[string]interface {} {\n\tname:\talex,\n\tage:\t20,\n\tgraduated:\tfalse,\n}\n",
+			" map[string]interface {} {\n\tgraduated:\tfalse,\n\tname:\talex,\n\tage:\t20,\n}\n",
+			" map[string]interface {} {\n\tage:\t20,\n\tgraduated:\tfalse,\n\tname:\talex,\n}\n",
+		}
+
 		got := output.String()
-		if got != expected {
-			t.Errorf("Expect: \n%v, but got: \n%v", expected, got)
+		pass := false
+		for _, expected := range expectedCases {
+			if got == expected {
+				pass = true
+				break
+			}
+		}
+
+		if !pass {
+			t.Errorf("Expect: \n%v, but got: \n%v", expectedCases, got)
 		}
 	})
 }

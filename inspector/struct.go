@@ -5,18 +5,6 @@ import (
 	"reflect"
 )
 
-type flag uintptr
-
-var (
-	// flagRO indicates whether the value field of a reflect.Value
-	// is read-only.
-	flagRO flag
-
-	// flagAddr indicates whether the address of the reflect.Value's
-	// value may be taken.
-	flagAddr flag
-)
-
 type StructInspector struct {
 }
 
@@ -41,6 +29,9 @@ func (r *StructInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, leve
 		structType = v.Type().String()
 		indentation = ""
 	}
+
+	// fmt.Println("===Type: ", v.Type().Name())
+	// fmt.Println("===Type: ", v.Type().String())
 
 	fmt.Fprintf(ioP.Output(), "%s%v{\n", indentation, structType)
 	for j := 0; j < v.NumField(); j++ {

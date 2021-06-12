@@ -39,8 +39,8 @@ func Inspect(variable interface{}) {
 
 func New() *IOPrinter {
 	return &IOPrinter{
-		Out:      os.Stdout,
-		maxDepth: 1,
+		Out: os.Stdout,
+		// maxDepth: 2,
 		inspectors: []Inspectable{
 			inspector.NewSliceInspector(),
 			inspector.NewMapInspector(),
@@ -49,6 +49,7 @@ func New() *IOPrinter {
 			inspector.NewStructInspector(),
 			inspector.NewStringInspector(),
 			inspector.NewBoolInspector(),
+			inspector.NewInterfaceInspector(),
 			// inspector.NewFallbackInspector(),
 		},
 	}
@@ -61,7 +62,7 @@ func (p *IOPrinter) SetOutput(out io.Writer) {
 }
 
 func (p *IOPrinter) Inspect(variable reflect.Value, level int) {
-	if level > p.maxDepth {
+	if p.maxDepth > 0 && level > p.maxDepth {
 		return
 	}
 
@@ -72,10 +73,10 @@ func (p *IOPrinter) Inspect(variable reflect.Value, level int) {
 	t := reflect.TypeOf(v)
 
 	// fmt.Printf("===To inspect: %#v\n", variable)
-	// fmt.Printf("===To inspect kind: %s\n", v.Kind())
+	fmt.Printf("===To inspect kind: %s\n", v.Kind())
 	for _, i := range p.inspectors {
 		if i.Applicable(t, v) {
-			// fmt.Println("===Found")
+			fmt.Println("===Found")
 			inspector = i
 			break
 		}

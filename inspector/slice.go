@@ -21,7 +21,8 @@ func (r *SliceInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level
 	for i := 0; i < level; i++ {
 		tabs += "\t"
 	}
-	fmt.Fprintf(ioP.Output(), "%s%s{\n", tabs, t)
+	// fmt.Printf("===Kind: %s", v.Type())
+	fmt.Fprintf(ioP.Output(), "%s%s{\n", tabs, v.Type())
 	for i := 0; i < v.Len(); i++ {
 		ele := v.Index(i)
 		// tt := reflect.TypeOf(ele)

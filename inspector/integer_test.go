@@ -30,3 +30,17 @@ func TestInspectInteger(t *testing.T) {
 		}
 	})
 }
+
+func TestApplicable(t *testing.T) {
+	t.Run("it returns true for integers", func(t *testing.T) {
+		intInspector := inspector.NewIntegerInspector()
+		integer := 1
+		vType := reflect.TypeOf(integer)
+		vValue := reflect.ValueOf(integer)
+		applicable := intInspector.Applicable(vType, vValue)
+		expected := true
+		if applicable != expected {
+			t.Errorf("Expect: %t, but got: %t", expected, applicable)
+		}
+	})
+}
