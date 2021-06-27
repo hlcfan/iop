@@ -88,7 +88,6 @@ func TestInspect(t *testing.T) {
 		pp.Inspect(m)
 		got := output.String()
 		expected := "map[string]string {\n\tfoo: \tbar,\n\thello: \tworld,\n}\n"
-		fmt.Printf("%v\n", got)
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)
 		}
