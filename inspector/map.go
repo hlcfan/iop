@@ -36,5 +36,10 @@ func (r *MapInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, l
 		ioP.Inspect(v, level+1)
 	}
 
-	fmt.Fprintf(ioP.Output(), "%s}\n", tabs)
+	var comma string
+	if level > 0 {
+		comma = ","
+	}
+
+	fmt.Fprintf(ioP.Output(), "%s}%s\n", tabs, comma)
 }

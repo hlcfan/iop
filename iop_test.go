@@ -71,7 +71,7 @@ func TestInspect(t *testing.T) {
 
 		pp.Inspect(people)
 
-		expected := "[]pp_test.person {\n\t{\n\t\tID:\t1,\n\t\tName:\talex,\n\t\tPhone:\t12345678,\n\t\tGraduated:\ttrue,\n\t\tCreatedAt:{\n\t\t\tTime:\t2009-11-17 20:34:58.651387237 +0000 UTC,\n\t\t\tValid:\ttrue,\n\t\t},\n\t\tAddresses: map[int]pp_test.address {\n\t\t\t1: {\n\t\t\t\tPostalCode:\t123,\n\t\t\t},\n\t\t}\n\t\tvehicles:[]pp_test.vehicle {\n\t\t\t{\n\t\t\t\tplate:\tCA-1234,\n\t\t\t},\n\t\t}\n\t},\n\t{\n\t\tID:\t2,\n\t\tName:\tbob,\n\t\tPhone:\t87654321,\n\t\tGraduated:\tfalse,\n\t\tCreatedAt:{\n\t\t\tTime:\t2021-06-05 20:34:58.651387237 +0800 +08,\n\t\t\tValid:\ttrue,\n\t\t},\n\t\tAddresses: map[int]pp_test.address {\n\t\t\t2: {\n\t\t\t\tPostalCode:\t876,\n\t\t\t},\n\t\t}\n\t\tvehicles:[]pp_test.vehicle {\n\t\t}\n\t},\n}\n"
+		expected := "[]pp_test.person {\n\t{\n\t\tID:\t1,\n\t\tName:\talex,\n\t\tPhone:\t12345678,\n\t\tGraduated:\ttrue,\n\t\tCreatedAt:{\n\t\t\tTime:\t2009-11-17 20:34:58.651387237 +0000 UTC,\n\t\t\tValid:\ttrue,\n\t\t},\n\t\tAddresses: map[int]pp_test.address {\n\t\t\t1: {\n\t\t\t\tPostalCode:\t123,\n\t\t\t},\n\t\t},\n\t\tvehicles:[]pp_test.vehicle {\n\t\t\t{\n\t\t\t\tplate:\tCA-1234,\n\t\t\t},\n\t\t},\n\t},\n\t{\n\t\tID:\t2,\n\t\tName:\tbob,\n\t\tPhone:\t87654321,\n\t\tGraduated:\tfalse,\n\t\tCreatedAt:{\n\t\t\tTime:\t2021-06-05 20:34:58.651387237 +0800 +08,\n\t\t\tValid:\ttrue,\n\t\t},\n\t\tAddresses: map[int]pp_test.address {\n\t\t\t2: {\n\t\t\t\tPostalCode:\t876,\n\t\t\t},\n\t\t},\n\t\tvehicles:[]pp_test.vehicle {\n\t\t},\n\t},\n}\n"
 		got := output.String()
 		fmt.Printf("=Got: %#v\n", got)
 		fmt.Printf("=Expected: %#v\n", expected)

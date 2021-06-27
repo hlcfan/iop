@@ -36,5 +36,10 @@ func (r *SliceInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value,
 		// fmt.Fprintln(ioP.Output(), "\t\t},")
 	}
 
-	fmt.Fprintf(ioP.Output(), "%s}\n", tabs)
+	var comma string
+	if level > 0 {
+		comma = ","
+	}
+
+	fmt.Fprintf(ioP.Output(), "%s}%s\n", tabs, comma)
 }
