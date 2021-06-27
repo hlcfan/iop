@@ -18,7 +18,7 @@ func (r *TimeInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 		v.Type().String() == "time.Time"
 }
 
-func (r *TimeInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
+func (r *TimeInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
 	// fmt.Printf("===Value : %#v\n", v.Type().String())
 	// fmt.Printf("===Value : %#v\n", v.Interface())
 

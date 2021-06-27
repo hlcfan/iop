@@ -8,7 +8,7 @@ package inspector_test
 // 		vType := reflect.TypeOf(trueValue)
 // 		vValue := reflect.ValueOf(trueValue)
 
-// 		ioP := iop.New()
+// 		ioP := pp.New()
 // 		ioP.SetOutput(&output)
 
 // 		sliceInspector := inspector.NewFallbackInspector()

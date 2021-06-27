@@ -16,7 +16,7 @@ func (r *SliceInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 	return v.Kind() == reflect.Slice
 }
 
-func (r *SliceInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
+func (r *SliceInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
 	var tabs string
 	for i := 0; i < level; i++ {
 		tabs += "\t"

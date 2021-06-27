@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/hlcfan/iop"
-	"github.com/hlcfan/iop/inspector"
+	"github.com/hlcfan/pp"
+	"github.com/hlcfan/pp/inspector"
 )
 
 func TestInspectSlice(t *testing.T) {
@@ -30,7 +30,7 @@ func TestInspectSlice(t *testing.T) {
 		vType := reflect.TypeOf(people)
 		vValue := reflect.ValueOf(people)
 
-		ioP := iop.New()
+		ioP := pp.New()
 		ioP.SetOutput(&output)
 		sliceInspector := inspector.NewSliceInspector()
 		sliceInspector.Inspect(ioP, vType, vValue, 0)

@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/hlcfan/iop"
-	"github.com/hlcfan/iop/inspector"
+	"github.com/hlcfan/pp"
+	"github.com/hlcfan/pp/inspector"
 )
 
 func TestInspectBool(t *testing.T) {
@@ -17,7 +17,7 @@ func TestInspectBool(t *testing.T) {
 		vType := reflect.TypeOf(trueValue)
 		vValue := reflect.ValueOf(trueValue)
 
-		ioP := iop.New()
+		ioP := pp.New()
 		ioP.SetOutput(&output)
 
 		sliceInspector := inspector.NewBoolInspector()

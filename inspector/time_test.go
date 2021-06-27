@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hlcfan/iop"
-	"github.com/hlcfan/iop/inspector"
+	"github.com/hlcfan/pp"
+	"github.com/hlcfan/pp/inspector"
 )
 
 func TestInspectTime(t *testing.T) {
@@ -19,7 +19,7 @@ func TestInspectTime(t *testing.T) {
 		vType := reflect.TypeOf(now)
 		vValue := reflect.ValueOf(now)
 
-		ioP := iop.New()
+		ioP := pp.New()
 		ioP.SetOutput(&output)
 		structInspector := inspector.NewTimeInspector()
 		structInspector.Inspect(ioP, vType, vValue, 0)

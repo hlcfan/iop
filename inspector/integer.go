@@ -29,6 +29,6 @@ func (r *IntegerInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 	return false
 }
 
-func (r *IntegerInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
+func (r *IntegerInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
 	fmt.Fprintf(ioP.Output(), "\t%d,\n", v.Int())
 }

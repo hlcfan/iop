@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/hlcfan/iop"
+	"github.com/hlcfan/pp"
 )
 
 type Person struct {
@@ -20,9 +20,9 @@ func main() {
 	}
 
 	// fmt.Println("===Puts")
-	// iop.Puts(alex)
+	// pp.Puts(alex)
 	// fmt.Println("===Inspect")
-	iop.Inspect(alex)
+	pp.Inspect(alex)
 
 	bob := Person{
 		ID:    2,
@@ -32,11 +32,11 @@ func main() {
 
 	people := []Person{alex, bob}
 	fmt.Println("===Inspect Slice")
-	iop.Inspect(people)
+	pp.Inspect(people)
 
 	fmt.Println("===Inspect Int")
-	iop.Inspect(1)
+	pp.Inspect(1)
 
 	fmt.Println("===Inspect Float")
-	iop.Inspect(1.12345678)
+	pp.Inspect(1.12345678)
 }

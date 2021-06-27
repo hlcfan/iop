@@ -16,7 +16,7 @@ func (r *StructInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 	return v.Kind() == reflect.Struct
 }
 
-func (r *StructInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
+func (r *StructInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
 	var tabs string
 	// TODO: may use buffer
 	for i := 0; i < level; i++ {

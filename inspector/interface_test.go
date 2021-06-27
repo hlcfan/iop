@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/hlcfan/iop"
-	"github.com/hlcfan/iop/inspector"
+	"github.com/hlcfan/pp"
+	"github.com/hlcfan/pp/inspector"
 )
 
 func TestInspectInterface(t *testing.T) {
@@ -35,7 +35,7 @@ func TestInspectInterface(t *testing.T) {
 		}
 
 		var output bytes.Buffer
-		ioP := iop.New()
+		ioP := pp.New()
 		ioP.SetOutput(&output)
 
 		sliceInspector := inspector.NewInterfaceInspector()

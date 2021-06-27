@@ -5,7 +5,7 @@ import (
 	"reflect"
 )
 
-type IOP interface {
+type Printable interface {
 	Inspect(variable reflect.Value, level int)
 	Output() io.Writer
 }

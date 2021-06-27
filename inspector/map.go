@@ -16,13 +16,18 @@ func (r *MapInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 	return v.Kind() == reflect.Map
 }
 
-func (r *MapInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
-	var tabs string
+func (r *MapInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
+	var tabs, indentation string
 	// TODO: may use buffer
 	for i := 0; i < level; i++ {
 		tabs += "\t"
 	}
-	fmt.Fprintf(ioP.Output(), " %s {\n", v.Type())
+
+	if level > 0 {
+		indentation = " "
+	}
+
+	fmt.Fprintf(ioP.Output(), "%s%s {\n", indentation, v.Type())
 	for _, key := range v.MapKeys() {
 		v := v.MapIndex(key)
 		// fmt.Printf("===Ele: %s\n", v.Type())

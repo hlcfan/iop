@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/hlcfan/iop"
-	"github.com/hlcfan/iop/inspector"
+	"github.com/hlcfan/pp"
+	"github.com/hlcfan/pp/inspector"
 )
 
 type person struct {
@@ -30,7 +30,7 @@ func TestInspectStruct(t *testing.T) {
 		vType := reflect.TypeOf(person)
 		vValue := reflect.ValueOf(person)
 
-		ioP := iop.New()
+		ioP := pp.New()
 		ioP.SetOutput(&output)
 		structInspector := inspector.NewStructInspector()
 		structInspector.Inspect(ioP, vType, vValue, 0)

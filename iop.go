@@ -1,4 +1,4 @@
-package iop
+package pp
 
 import (
 	"fmt"
@@ -7,12 +7,12 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/hlcfan/iop/inspector"
+	"github.com/hlcfan/pp/inspector"
 )
 
 var std = New()
 
-type IOPrinter struct {
+type PPrinter struct {
 	mutex      sync.Mutex
 	Out        io.Writer
 	inspectors []Inspectable
@@ -21,7 +21,7 @@ type IOPrinter struct {
 
 type Inspectable interface {
 	Applicable(reflect.Type, reflect.Value) bool
-	Inspect(inspector.IOP, reflect.Type, reflect.Value, int)
+	Inspect(inspector.Printable, reflect.Type, reflect.Value, int)
 }
 
 func SetOutput(out io.Writer) {
@@ -37,8 +37,8 @@ func Inspect(variable interface{}) {
 	std.Inspect(v, 0)
 }
 
-func New() *IOPrinter {
-	return &IOPrinter{
+func New() *PPrinter {
+	return &PPrinter{
 		Out: os.Stdout,
 		// maxDepth: 2,
 		inspectors: []Inspectable{
@@ -55,13 +55,13 @@ func New() *IOPrinter {
 	}
 }
 
-func (p *IOPrinter) SetOutput(out io.Writer) {
+func (p *PPrinter) SetOutput(out io.Writer) {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
 	p.Out = out
 }
 
-func (p *IOPrinter) Inspect(variable reflect.Value, level int) {
+func (p *PPrinter) Inspect(variable reflect.Value, level int) {
 	if p.maxDepth > 0 && level > p.maxDepth {
 		return
 	}
@@ -87,7 +87,7 @@ func (p *IOPrinter) Inspect(variable reflect.Value, level int) {
 		return
 	}
 
-	// Should be pass in IOPrinter to cater case for nested object, so that
+	// Should be pass in PPrinter to cater case for nested object, so that
 	// `Inspect` can be called nestedly.
 	inspector.Inspect(p, t, v, level)
 	// // fmt.Printf("===Kind: %#v\n", t.Kind() == reflect.Slice)
@@ -99,11 +99,11 @@ func (p *IOPrinter) Inspect(variable reflect.Value, level int) {
 	// }
 }
 
-func (p *IOPrinter) Output() io.Writer {
+func (p *PPrinter) Output() io.Writer {
 	return p.Out
 }
 
-func (p *IOPrinter) inspectSlice(t reflect.Type, v reflect.Value) {
+func (p *PPrinter) inspectSlice(t reflect.Type, v reflect.Value) {
 	fmt.Println("===================")
 	// fmt.Println("===Ele type: ", t)
 	// fmt.Println("===Ele type: ", t.Elem())

@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/hlcfan/iop"
-	"github.com/hlcfan/iop/inspector"
+	"github.com/hlcfan/pp"
+	"github.com/hlcfan/pp/inspector"
 )
 
 type Person struct {
@@ -35,16 +35,16 @@ func TestInspectMap(t *testing.T) {
 		vType := reflect.TypeOf(maps)
 		vValue := reflect.ValueOf(maps)
 
-		ioP := iop.New()
+		ioP := pp.New()
 		ioP.SetOutput(&output)
 		mapInspector := inspector.NewMapInspector()
 		mapInspector.Inspect(ioP, vType, vValue, 0)
 
 		//TODO: can be flaky, due to map doesn't maintain order
 		expectedCases := []string{
-			" map[string]interface {} {\n\tname: \talex,\n\tage: \t20,\n\tgraduated: \tfalse,\n}\n",
-			" map[string]interface {} {\n\tgraduated: \tfalse,\n\tname: \talex,\n\tage: \t20,\n}\n",
-			" map[string]interface {} {\n\tage: \t20,\n\tgraduated: \tfalse,\n\tname: \talex,\n}\n",
+			"map[string]interface {} {\n\tname: \talex,\n\tage: \t20,\n\tgraduated: \tfalse,\n}\n",
+			"map[string]interface {} {\n\tgraduated: \tfalse,\n\tname: \talex,\n\tage: \t20,\n}\n",
+			"map[string]interface {} {\n\tage: \t20,\n\tgraduated: \tfalse,\n\tname: \talex,\n}\n",
 		}
 
 		got := output.String()

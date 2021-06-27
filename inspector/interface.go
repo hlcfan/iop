@@ -15,6 +15,6 @@ func (r *InterfaceInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 	return v.Kind() == reflect.Interface
 }
 
-func (r *InterfaceInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, level int) {
+func (r *InterfaceInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
 	fmt.Fprintf(ioP.Output(), "\t%v,\n", v)
 }
