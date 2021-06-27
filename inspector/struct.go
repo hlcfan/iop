@@ -24,16 +24,14 @@ func (r *StructInspector) Inspect(ioP IOP, t reflect.Type, v reflect.Value, leve
 	}
 
 	var structType string
-	indentation := "\t"
 	if level == 0 {
 		structType = v.Type().String()
-		indentation = ""
 	}
 
 	// fmt.Println("===Type: ", v.Type().Name())
 	// fmt.Println("===Type: ", v.Type().String())
 
-	fmt.Fprintf(ioP.Output(), "%s%v{\n", indentation, structType)
+	fmt.Fprintf(ioP.Output(), "%v{\n", structType)
 	for j := 0; j < v.NumField(); j++ {
 		typeField := v.Type().Field(j)
 		fmt.Fprintf(ioP.Output(), "%s\t%s:", tabs, typeField.Name)

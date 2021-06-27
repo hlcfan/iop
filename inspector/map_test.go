@@ -42,9 +42,9 @@ func TestInspectMap(t *testing.T) {
 
 		//TODO: can be flaky, due to map doesn't maintain order
 		expectedCases := []string{
-			" map[string]interface {} {\n\tname:\talex,\n\tage:\t20,\n\tgraduated:\tfalse,\n}\n",
-			" map[string]interface {} {\n\tgraduated:\tfalse,\n\tname:\talex,\n\tage:\t20,\n}\n",
-			" map[string]interface {} {\n\tage:\t20,\n\tgraduated:\tfalse,\n\tname:\talex,\n}\n",
+			" map[string]interface {} {\n\tname: \talex,\n\tage: \t20,\n\tgraduated: \tfalse,\n}\n",
+			" map[string]interface {} {\n\tgraduated: \tfalse,\n\tname: \talex,\n\tage: \t20,\n}\n",
+			" map[string]interface {} {\n\tage: \t20,\n\tgraduated: \tfalse,\n\tname: \talex,\n}\n",
 		}
 
 		got := output.String()
