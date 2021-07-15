@@ -11,22 +11,49 @@ import (
 
 func TestInspectBool(t *testing.T) {
 	t.Run("It inspects bool", func(t *testing.T) {
-		var output bytes.Buffer
+		tcs := []struct {
+			actual   bool
+			level    int
+			expected string
+		}{
+			{
+				actual:   true,
+				level:    0,
+				expected: "true\n",
+			},
+			{
+				actual:   true,
+				level:    1,
+				expected: "\ttrue,\n",
+			},
+			{
+				actual:   false,
+				level:    0,
+				expected: "false\n",
+			},
+			{
+				actual:   false,
+				level:    1,
+				expected: "\tfalse,\n",
+			},
+		}
 
-		trueValue := true
-		vType := reflect.TypeOf(trueValue)
-		vValue := reflect.ValueOf(trueValue)
+		for _, tc := range tcs {
+			var output bytes.Buffer
 
-		ioP := pp.New()
-		ioP.SetOutput(&output)
+			vType := reflect.TypeOf(tc.actual)
+			vValue := reflect.ValueOf(tc.actual)
 
-		sliceInspector := inspector.NewBoolInspector()
-		sliceInspector.Inspect(ioP, vType, vValue, 0)
+			ioP := pp.New()
+			ioP.SetOutput(&output)
 
-		expected := "\ttrue,\n"
-		got := output.String()
-		if got != expected {
-			t.Errorf("Expect: %s, but got: %s", expected, got)
+			sliceInspector := inspector.NewBoolInspector()
+			sliceInspector.Inspect(ioP, vType, vValue, tc.level)
+
+			got := output.String()
+			if got != tc.expected {
+				t.Errorf("Expect: %s, but got: %s", tc.expected, got)
+			}
 		}
 	})
 }

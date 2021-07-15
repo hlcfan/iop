@@ -16,5 +16,13 @@ func (r *BoolInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 }
 
 func (r *BoolInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
-	fmt.Fprintf(ioP.Output(), "\t%t,\n", v.Bool())
+	var tab string
+	var comma string
+
+	if level > 0 {
+		tab = "\t"
+		comma = ","
+	}
+
+	fmt.Fprintf(ioP.Output(), "%s%t%s\n", tab, v.Bool(), comma)
 }
