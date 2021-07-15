@@ -30,8 +30,6 @@ func (r *MapInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, l
 	fmt.Fprintf(ioP.Output(), "%s%s {\n", indentation, v.Type())
 	for _, key := range v.MapKeys() {
 		v := v.MapIndex(key)
-		// fmt.Printf("===Ele: %s\n", v.Type())
-		// fmt.Fprintf(ioP.Output(), "%s\t%s:\t%v,\n", tabs, e, v)
 		fmt.Fprintf(ioP.Output(), "%s\t%v: ", tabs, key.Interface())
 		ioP.Inspect(v, level+1)
 	}

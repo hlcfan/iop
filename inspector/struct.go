@@ -28,15 +28,11 @@ func (r *StructInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value
 		structType = v.Type().String()
 	}
 
-	// fmt.Println("===Type: ", v.Type().Name())
-	// fmt.Println("===Type: ", v.Type().String())
-
 	fmt.Fprintf(ioP.Output(), "%v{\n", structType)
 	for j := 0; j < v.NumField(); j++ {
 		typeField := v.Type().Field(j)
 		fmt.Fprintf(ioP.Output(), "%s\t%s:", tabs, typeField.Name)
 
-		// key := typeField.Name
 		field := v.Field(j)
 		ioP.Inspect(field, level+1)
 	}

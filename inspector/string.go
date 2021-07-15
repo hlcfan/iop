@@ -23,5 +23,6 @@ func (r *StringInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value
 		tab = "\t"
 		comma = ","
 	}
+
 	fmt.Fprintf(ioP.Output(), "%s%s%s\n", tab, v.String(), comma)
 }
