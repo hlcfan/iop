@@ -16,5 +16,12 @@ func (r *StringInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 }
 
 func (r *StringInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
-	fmt.Fprintf(ioP.Output(), "\t%s,\n", v.String())
+	var tab string
+	var comma string
+
+	if level > 0 {
+		tab = "\t"
+		comma = ","
+	}
+	fmt.Fprintf(ioP.Output(), "%s%s%s\n", tab, v.String(), comma)
 }
