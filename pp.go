@@ -14,7 +14,7 @@ var std = New()
 
 type PPrinter struct {
 	mutex      sync.Mutex
-	Out        io.Writer
+	Out        *tabwriter.Writer
 	inspectors []Inspectable
 	maxDepth   int
 }
@@ -28,13 +28,17 @@ func SetOutput(out io.Writer) {
 	std.SetOutput(out)
 }
 
-func Puts(variable interface{}) {
-	v := reflect.ValueOf(variable)
-	std.Inspect(v, 0)
+func Puts(variables ...interface{}) {
+	for _, variable := range variables {
+		v := reflect.ValueOf(variable)
+		std.Inspect(v, 0)
+	}
+
+	std.Out.Flush()
 }
 
 func New() *PPrinter {
-	w := tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
+	w := tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', tabwriter.Debug)
 	return &PPrinter{
 		Out: w,
 		// maxDepth: 2,
@@ -85,4 +89,8 @@ func (p *PPrinter) Inspect(variable reflect.Value, level int) {
 
 func (p *PPrinter) Output() io.Writer {
 	return p.Out
+}
+
+func (p *PPrinter) Flush() {
+	p.Out.Flush()
 }
