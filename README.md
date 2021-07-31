@@ -2,6 +2,27 @@
 
 pp is a simple printer for Golang.
 
+### Usages
+
+**Print variables**
+
+```go
+pp.Puts(variable)
+```
+
+**Set output**
+
+```go
+var output bytes.Buffer
+pp.SetOutput()
+```
+
+**Print with label**
+
+```go
+pp.Label("a string").Puts("hello world")
+```
+
 ### Examples
 
 #### Map

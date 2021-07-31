@@ -29,9 +29,7 @@ type address struct {
 
 func TestPuts(t *testing.T) {
 	t.Run("slice", func(t *testing.T) {
-		// t.Skip()
 		var output bytes.Buffer
-		// w := tabwriter.NewWriter(&output, 4, 4, 1, ' ', 0)
 		pp.SetOutput(&output)
 
 		people := []person{
@@ -127,12 +125,25 @@ func TestPuts(t *testing.T) {
 		var output bytes.Buffer
 		pp.SetOutput(&output)
 
-		m := map[string]string{"foo": "bar", "hello": "world"}
-		pp.Puts("Map: ", m)
+		m := []string{"foo", "bar", "hello", "world"}
+		pp.Puts("Slice: ", m)
 		got := output.String()
-		expected := "Map: \nmap[string]string {\n    foo:   bar,\n    hello: world,\n}\n"
+		expected := "Slice: \n[]string {\n    foo,\n    bar,\n    hello,\n    world,\n}\n"
 		// fmt.Printf("=Got: %#v\n", got)
 		// fmt.Printf("=Exp: %#v\n", expected)
+		if got != expected {
+			t.Errorf("Expect: %s, but got: %s", expected, got)
+		}
+	})
+
+	t.Run("it prints with label", func(t *testing.T) {
+		var output bytes.Buffer
+		pp.SetOutput(&output)
+
+		m := []string{"foo", "bar"}
+		pp.Label("Info: ").Puts(m)
+		got := output.String()
+		expected := "Info: []string {\n    foo,\n    bar,\n}\n"
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)
 		}

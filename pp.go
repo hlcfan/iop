@@ -1,6 +1,7 @@
 package pp
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"reflect"
@@ -14,9 +15,10 @@ var std = New()
 
 type PPrinter struct {
 	mutex      sync.Mutex
-	Out        *tabwriter.Writer
+	out        *tabwriter.Writer
 	inspectors []Inspectable
 	maxDepth   int
+	label      string
 }
 
 type Inspectable interface {
@@ -29,18 +31,19 @@ func SetOutput(out io.Writer) {
 }
 
 func Puts(variables ...interface{}) {
-	for _, variable := range variables {
-		v := reflect.ValueOf(variable)
-		std.Inspect(v, 0)
-	}
+	std.Puts(variables...)
+}
 
-	std.Out.Flush()
+func Label(label string) *PPrinter {
+	std.label = label
+
+	return std
 }
 
 func New() *PPrinter {
 	w := tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 	return &PPrinter{
-		Out: w,
+		out: w,
 		// maxDepth: 2,
 		inspectors: []Inspectable{
 			inspector.NewSliceInspector(),
@@ -56,11 +59,21 @@ func New() *PPrinter {
 	}
 }
 
+func (p *PPrinter) Puts(variables ...interface{}) {
+	for _, variable := range variables {
+		fmt.Fprint(std.out, std.label)
+		v := reflect.ValueOf(variable)
+		p.Inspect(v, 0)
+	}
+
+	p.out.Flush()
+}
+
 func (p *PPrinter) SetOutput(out io.Writer) {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
 	w := tabwriter.NewWriter(out, 4, 4, 1, ' ', 0)
-	p.Out = w
+	p.out = w
 }
 
 func (p *PPrinter) Inspect(variable reflect.Value, level int) {
@@ -88,9 +101,9 @@ func (p *PPrinter) Inspect(variable reflect.Value, level int) {
 }
 
 func (p *PPrinter) Output() io.Writer {
-	return p.Out
+	return p.out
 }
 
 func (p *PPrinter) Flush() {
-	p.Out.Flush()
+	p.out.Flush()
 }
