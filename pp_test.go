@@ -32,6 +32,7 @@ func TestPuts(t *testing.T) {
 		var output bytes.Buffer
 		pp.SetOutput(&output)
 
+		loc, _ := time.LoadLocation("Asia/Singapore")
 		people := []person{
 			{
 				ID:        1,
@@ -60,7 +61,7 @@ func TestPuts(t *testing.T) {
 				CreatedAt: sql.NullTime{
 					Valid: true,
 					Time: time.Date(
-						2021, 06, 5, 20, 34, 58, 651387237, time.Local),
+						2021, 06, 5, 20, 34, 58, 651387237, loc),
 				},
 				Addresses: map[int]address{
 					2: {PostalCode: 876},
@@ -70,7 +71,7 @@ func TestPuts(t *testing.T) {
 
 		pp.Puts(people)
 
-		expected := "[]pp_test.person {\n    {\n        ID:        1,\n        Name:      alex,\n        Phone:     12345678,\n        Graduated: true,\n        CreatedAt: {\n                   Time:  2009-11-17 20:34:58.651387237 +0000 UTC,\n                   Valid: true,\n        },\n        Addresses: map[int]pp_test.address {\n                   1:  {\n                       PostalCode: 123,\n                   },\n        },\n        vehicles: []pp_test.vehicle {\n                  {\n                      plate: CA-1234,\n                  },\n        },\n    },\n    {\n        ID:        2,\n        Name:      bob,\n        Phone:     87654321,\n        Graduated: false,\n        CreatedAt: {\n                   Time:  2021-06-05 20:34:58.651387237 +0800 CST,\n                   Valid: true,\n        },\n        Addresses: map[int]pp_test.address {\n                   2:  {\n                       PostalCode: 876,\n                   },\n        },\n        vehicles: []pp_test.vehicle {\n        },\n    },\n}\n"
+		expected := "[]pp_test.person {\n    {\n        ID:        1,\n        Name:      alex,\n        Phone:     12345678,\n        Graduated: true,\n        CreatedAt: {\n                   Time:  2009-11-17 20:34:58.651387237 +0000 UTC,\n                   Valid: true,\n        },\n        Addresses: map[int]pp_test.address {\n                   1:  {\n                       PostalCode: 123,\n                   },\n        },\n        vehicles: []pp_test.vehicle {\n                  {\n                      plate: CA-1234,\n                  },\n        },\n    },\n    {\n        ID:        2,\n        Name:      bob,\n        Phone:     87654321,\n        Graduated: false,\n        CreatedAt: {\n                   Time:  2021-06-05 20:34:58.651387237 +0800 +08,\n                   Valid: true,\n        },\n        Addresses: map[int]pp_test.address {\n                   2:  {\n                       PostalCode: 876,\n                   },\n        },\n        vehicles: []pp_test.vehicle {\n        },\n    },\n}\n"
 		got := output.String()
 		// fmt.Printf("=Got: %#v\n", got)
 		// fmt.Printf("=Expected: %#v\n", expected)
