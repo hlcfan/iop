@@ -2,6 +2,12 @@
 
 pp is a simple printer for Golang.
 
+### Install
+
+```
+go get github.com/hlcfan/pp@0.1.0
+```
+
 ### Examples
 
 #### Map
