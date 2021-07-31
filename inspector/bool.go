@@ -16,5 +16,10 @@ func (r *BoolInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 }
 
 func (r *BoolInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
-	fmt.Fprintf(ioP.Output(), "%t,\n", v.Bool())
+	format := "%t\n"
+	if level > 0 {
+		format = "%t,\n"
+	}
+
+	fmt.Fprintf(ioP.Output(), format, v.Bool())
 }

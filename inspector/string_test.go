@@ -2,6 +2,7 @@ package inspector_test
 
 import (
 	"bytes"
+	"fmt"
 	"reflect"
 	"testing"
 
@@ -24,26 +25,29 @@ func TestInspectString(t *testing.T) {
 			{
 				actual:   "Howdy",
 				level:    0,
-				expected: "Howdy,\n",
+				expected: "Howdy\n",
 			},
 		}
 
 		for _, tc := range tcs {
-			var output bytes.Buffer
+			t.Run(fmt.Sprintf("level: %d", tc.level), func(t *testing.T) {
+				var output bytes.Buffer
 
-			vType := reflect.TypeOf(tc.actual)
-			vValue := reflect.ValueOf(tc.actual)
+				vType := reflect.TypeOf(tc.actual)
+				vValue := reflect.ValueOf(tc.actual)
 
-			ioP := pp.New()
-			ioP.SetOutput(&output)
+				ioP := pp.New()
+				ioP.SetOutput(&output)
 
-			sliceInspector := inspector.NewStringInspector()
-			sliceInspector.Inspect(ioP, vType, vValue, tc.level)
+				sliceInspector := inspector.NewStringInspector()
+				sliceInspector.Inspect(ioP, vType, vValue, tc.level)
+				ioP.Flush()
 
-			got := output.String()
-			if got != tc.expected {
-				t.Errorf("Expect: %s, but got: %s", tc.expected, got)
-			}
+				got := output.String()
+				if got != tc.expected {
+					t.Errorf("Expect: %s, but got: %s", tc.expected, got)
+				}
+			})
 		}
 	})
 }

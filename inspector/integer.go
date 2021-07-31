@@ -30,5 +30,10 @@ func (r *IntegerInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 }
 
 func (r *IntegerInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
-	fmt.Fprintf(ioP.Output(), "%d,\n", v.Int())
+	format := "%d\n"
+	if level > 0 {
+		format = "%d,\n"
+	}
+
+	fmt.Fprintf(ioP.Output(), format, v.Int())
 }

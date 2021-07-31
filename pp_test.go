@@ -130,7 +130,7 @@ func TestPuts(t *testing.T) {
 		m := map[string]string{"foo": "bar", "hello": "world"}
 		pp.Puts("Map: ", m)
 		got := output.String()
-		expected := "Map: map[string]string {\n    foo:   bar,\n    hello: world,\n}\n"
+		expected := "Map: \nmap[string]string {\n    foo:   bar,\n    hello: world,\n}\n"
 		// fmt.Printf("=Got: %#v\n", got)
 		// fmt.Printf("=Exp: %#v\n", expected)
 		if got != expected {

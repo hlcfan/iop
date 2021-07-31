@@ -20,7 +20,7 @@ func TestInspectBool(t *testing.T) {
 			{
 				actual:   true,
 				level:    0,
-				expected: "true,\n",
+				expected: "true\n",
 			},
 			{
 				actual:   true,
@@ -30,7 +30,7 @@ func TestInspectBool(t *testing.T) {
 			{
 				actual:   false,
 				level:    0,
-				expected: "false,\n",
+				expected: "false\n",
 			},
 			{
 				actual:   false,

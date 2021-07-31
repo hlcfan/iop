@@ -38,7 +38,7 @@ func Puts(variables ...interface{}) {
 }
 
 func New() *PPrinter {
-	w := tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', tabwriter.Debug)
+	w := tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 	return &PPrinter{
 		Out: w,
 		// maxDepth: 2,

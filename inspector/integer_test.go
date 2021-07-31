@@ -10,7 +10,7 @@ import (
 )
 
 func TestInspectInteger(t *testing.T) {
-	t.Run("It inspects integer", func(t *testing.T) {
+	t.Run("It inspects integer for level 0", func(t *testing.T) {
 		var output bytes.Buffer
 
 		integer := 1
@@ -22,6 +22,26 @@ func TestInspectInteger(t *testing.T) {
 
 		sliceInspector := inspector.NewIntegerInspector()
 		sliceInspector.Inspect(ioP, vType, vValue, 0)
+
+		expected := "1\n"
+		got := output.String()
+		if got != expected {
+			t.Errorf("Expect: %s, but got: %s", expected, got)
+		}
+	})
+
+	t.Run("It inspects integer for higher level", func(t *testing.T) {
+		var output bytes.Buffer
+
+		integer := 1
+		vType := reflect.TypeOf(integer)
+		vValue := reflect.ValueOf(integer)
+
+		ioP := pp.New()
+		ioP.SetOutput(&output)
+
+		sliceInspector := inspector.NewIntegerInspector()
+		sliceInspector.Inspect(ioP, vType, vValue, 1)
 
 		expected := "1,\n"
 		got := output.String()

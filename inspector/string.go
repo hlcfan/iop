@@ -16,5 +16,10 @@ func (r *StringInspector) Applicable(t reflect.Type, v reflect.Value) bool {
 }
 
 func (r *StringInspector) Inspect(ioP Printable, t reflect.Type, v reflect.Value, level int) {
-	fmt.Fprintf(ioP.Output(), "%s,\n", v.String())
+	format := "%s\n"
+	if level > 0 {
+		format = "%s,\n"
+	}
+
+	fmt.Fprintf(ioP.Output(), format, v.String())
 }
