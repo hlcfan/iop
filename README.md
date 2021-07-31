@@ -6,24 +6,24 @@ pp is a simple printer for Golang.
 
 #### Map
 
-```
+```go
 import "github.com/hlcfan/pp"
 
 m := map[string]string{"foo": "bar", "hello": "world"}
-pp.Print(m)
+pp.Puts(m)
 ```
 
 *Output*
 ```
 map[string]string {
-  foo: 	bar,
-  hello: 	world,
+    foo:   bar,
+    hello: world,
 }
 ```
 
 #### Complex data
 
-```
+```go
 people := []person{
   {
     ID:        1,
@@ -60,48 +60,48 @@ people := []person{
   },
 }
 
-pp.Inspect(people)
+pp.Puts(people)
 ```
 
 *Output*
 ```
 []pp_test.person {
-  {
-    ID:	1,
-    Name:	alex,
-    Phone:	12345678,
-    Graduated:	true,
-    CreatedAt:{
-      Time:	2009-11-17 20:34:58.651387237 +0000 UTC,
-      Valid:	true,
+    {
+        ID:        1,
+        Name:      alex,
+        Phone:     12345678,
+        Graduated: true,
+        CreatedAt: {
+                   Time:  2009-11-17 20:34:58.651387237 +0000 UTC,
+                   Valid: true,
+        },
+        Addresses: map[int]pp_test.address {
+                   1:  {
+                       PostalCode: 123,
+                   },
+        },
+        vehicles: []pp_test.vehicle {
+                  {
+                      plate: CA-1234,
+                  },
+        },
     },
-    Addresses: map[int]pp_test.address {
-      1: {
-        PostalCode:	123,
-      },
+    {
+        ID:        2,
+        Name:      bob,
+        Phone:     87654321,
+        Graduated: false,
+        CreatedAt: {
+                   Time:  2021-06-05 20:34:58.651387237 +0800 CST,
+                   Valid: true,
+        },
+        Addresses: map[int]pp_test.address {
+                   2:  {
+                       PostalCode: 876,
+                   },
+        },
+        vehicles: []pp_test.vehicle {
+        },
     },
-    vehicles:[]pp_test.vehicle {
-      {
-        plate:	CA-1234,
-      },
-    },
-  },
-  {
-    ID:	2,
-    Name:	bob,
-    Phone:	87654321,
-    Graduated:	false,
-    CreatedAt:{
-      Time:	2021-06-05 20:34:58.651387237 +0800 +08,
-      Valid:	true,
-    },
-    Addresses: map[int]pp_test.address {
-      2: {
-        PostalCode:	876,
-      },
-    },
-    vehicles:[]pp_test.vehicle {
-    },
-  },
 }
 ```

@@ -19,12 +19,12 @@ func TestInspectString(t *testing.T) {
 			{
 				actual:   "Howdy",
 				level:    1,
-				expected: "\tHowdy,\n",
+				expected: "Howdy,\n",
 			},
 			{
 				actual:   "Howdy",
 				level:    0,
-				expected: "Howdy\n",
+				expected: "Howdy,\n",
 			},
 		}
 
@@ -40,10 +40,9 @@ func TestInspectString(t *testing.T) {
 			sliceInspector := inspector.NewStringInspector()
 			sliceInspector.Inspect(ioP, vType, vValue, tc.level)
 
-			expected := "Howdy,\n"
 			got := output.String()
-			if got != expected {
-				t.Errorf("Expect: %s, but got: %s", expected, got)
+			if got != tc.expected {
+				t.Errorf("Expect: %s, but got: %s", tc.expected, got)
 			}
 		}
 	})

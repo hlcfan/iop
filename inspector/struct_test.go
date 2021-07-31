@@ -2,7 +2,6 @@ package inspector_test
 
 import (
 	"bytes"
-	"fmt"
 	"reflect"
 	"testing"
 
@@ -38,7 +37,7 @@ func TestInspectStruct(t *testing.T) {
 
 		expected := "inspector_test.person{\n    ID:      1,\n    Name:    alex,\n    Phone:   12345678,\n    address: Singapore,\n}\n"
 		got := output.String()
-		fmt.Printf("===: %#v\n", got)
+		// fmt.Printf("===: %#v\n", got)
 		if got != expected {
 			t.Errorf("Expect: %s, but got: %s", expected, got)
 		}

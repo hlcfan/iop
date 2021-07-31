@@ -2,7 +2,6 @@ package inspector_test
 
 import (
 	"bytes"
-	"fmt"
 	"reflect"
 	"strconv"
 	"testing"
@@ -49,7 +48,7 @@ func TestInspectInterface(t *testing.T) {
 				sliceInspector.Inspect(ioP, vType, vValue, 0)
 
 				got := output.String()
-				fmt.Printf("===Got: %#v\n", got)
+				// fmt.Printf("===Got: %#v\n", got)
 				if got != tc.expected {
 					t.Errorf("Case: %d, expect: %s, but got: %s", tc.id, tc.expected, got)
 				}
