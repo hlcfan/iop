@@ -2,13 +2,13 @@
 
 pp is a simple printer for Golang.
 
-### Install
+## Install
 
 ```shell
 go get github.com/hlcfan/pp@0.2.0
 ```
 
-### Usage
+## Usage
 
 **Print variables**
 
@@ -29,7 +29,7 @@ pp.SetOutput()
 pp.Label("a string").Puts("hello world")
 ```
 
-### Examples
+## Examples
 
 #### Map
 
