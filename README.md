@@ -1,5 +1,7 @@
 # pp
 
+[![Go](https://github.com/hlcfan/pp/actions/workflows/go.yml/badge.svg?branch=master)](https://github.com/hlcfan/pp/actions/workflows/go.yml)
+
 pp is a simple printer for Golang.
 
 ## Install

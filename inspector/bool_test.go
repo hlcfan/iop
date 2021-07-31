@@ -2,7 +2,6 @@ package inspector_test
 
 import (
 	"bytes"
-	"fmt"
 	"reflect"
 	"testing"
 
@@ -52,8 +51,8 @@ func TestInspectBool(t *testing.T) {
 			sliceInspector.Inspect(ioP, vType, vValue, tc.level)
 
 			got := output.String()
-			fmt.Printf("===Got: %#v\n", got)
-			fmt.Printf("===Exp: %#v\n", tc.expected)
+			// fmt.Printf("===Got: %#v\n", got)
+			// fmt.Printf("===Exp: %#v\n", tc.expected)
 			if got != tc.expected {
 				t.Errorf("Expect: %s, but got: %s", tc.expected, got)
 			}
