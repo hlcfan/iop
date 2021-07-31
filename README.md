@@ -2,7 +2,13 @@
 
 pp is a simple printer for Golang.
 
-### Usages
+### Install
+
+```shell
+go get github.com/hlcfan/pp@0.2.0
+```
+
+### Usage
 
 **Print variables**
 
@@ -126,3 +132,4 @@ pp.Puts(people)
     },
 }
 ```
+

@@ -141,7 +141,7 @@ func TestPuts(t *testing.T) {
 		pp.SetOutput(&output)
 
 		m := []string{"foo", "bar"}
-		pp.Label("Info: ").Puts(m)
+		pp.Label("Info").Puts(m)
 		got := output.String()
 		expected := "Info: []string {\n    foo,\n    bar,\n}\n"
 		if got != expected {

@@ -61,7 +61,10 @@ func New() *PPrinter {
 
 func (p *PPrinter) Puts(variables ...interface{}) {
 	for _, variable := range variables {
-		fmt.Fprint(std.out, std.label)
+		if len(p.label) > 0 {
+			fmt.Fprint(p.out, p.label, ": ")
+		}
+
 		v := reflect.ValueOf(variable)
 		p.Inspect(v, 0)
 	}
