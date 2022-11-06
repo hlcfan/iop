@@ -1,89 +1,114 @@
 package pp
 
 import (
+	"bufio"
 	"io"
 	"os"
 	"reflect"
+	"strings"
 	"sync"
-
-	"github.com/hlcfan/pp/inspector"
 )
 
-var std = New()
+var once sync.Once
+var printer *PPrinter
+
+const (
+	defaultPrefix = ""
+	defaultIndent = " "
+)
 
 type PPrinter struct {
+	*bufio.Writer
 	mutex      sync.Mutex
-	Out        io.Writer
-	inspectors []Inspectable
 	maxDepth   int
+	indent     string
+	prefix     string
+	putNewline bool
 }
 
-type Inspectable interface {
-	Applicable(reflect.Type, reflect.Value) bool
-	Inspect(inspector.Printable, reflect.Type, reflect.Value, int)
+func Puts(variable any) {
+	p := New(os.Stdout, defaultPrefix, defaultIndent)
+
+	p.Inspect(reflect.ValueOf(variable), 0)
+	p.Flush()
 }
 
-func SetOutput(out io.Writer) {
-	std.SetOutput(out)
+func SetOutput(w io.Writer) {
+	printer.SetOutput(bufio.NewWriter(w))
 }
 
-// func Puts(variable interface{}) {
-// 	fmt.Fprintf("===Variable: %#v\n", variable)
-// }
+func New(w io.Writer, prefix, indent string) *PPrinter {
+	once.Do(func() {
+		printer = &PPrinter{
+			maxDepth: 5,
+			prefix:   prefix,
+			indent:   indent,
+			Writer:   bufio.NewWriter(w),
+		}
+	})
 
-func Inspect(variable interface{}) {
-	v := reflect.ValueOf(variable)
-	std.Inspect(v, 0)
+	return printer
 }
 
-func New() *PPrinter {
-	return &PPrinter{
-		Out: os.Stdout,
-		// maxDepth: 2,
-		inspectors: []Inspectable{
-			inspector.NewSliceInspector(),
-			inspector.NewMapInspector(),
-			inspector.NewIntegerInspector(),
-			inspector.NewTimeInspector(),
-			inspector.NewStructInspector(),
-			inspector.NewStringInspector(),
-			inspector.NewBoolInspector(),
-			inspector.NewInterfaceInspector(),
-			// inspector.NewFallbackInspector(),
-		},
-	}
-}
-
-func (p *PPrinter) SetOutput(out io.Writer) {
+func (p *PPrinter) SetOutput(w io.Writer) {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
-	p.Out = out
+	p.Writer = bufio.NewWriter(w)
 }
 
-func (p *PPrinter) Inspect(variable reflect.Value, level int) {
+func (p *PPrinter) Inspect(v reflect.Value, level int) {
 	if p.maxDepth > 0 && level > p.maxDepth {
 		return
 	}
 
-	var inspector Inspectable
-
-	v := variable
-	t := reflect.TypeOf(v)
-
-	for _, i := range p.inspectors {
-		if i.Applicable(t, v) {
-			inspector = i
-			break
-		}
-	}
-
-	if inspector == nil {
+	if !v.IsValid() {
+		p.WriteString("nil")
 		return
 	}
 
-	inspector.Inspect(p, t, v, level)
+	p.writePrefix()
+
+	switch v.Kind() {
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		p.PrintSignedInteger(v)
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		p.PrintUnsignedInteger(v)
+	case reflect.String:
+		p.PrintString(v)
+	case reflect.Bool:
+		p.PrintBool(v)
+	case reflect.Slice:
+		p.PrintList(v, level)
+	case reflect.Struct:
+		p.PrintStruct(v, level)
+	case reflect.Map:
+		p.PrintMap(v, level)
+	case reflect.Interface, reflect.Ptr:
+		p.Inspect(v.Elem(), level)
+	default:
+		p.WriteString(v.String())
+	}
+
+	if level == 0 {
+		p.writeNewline()
+	}
 }
 
-func (p *PPrinter) Output() io.Writer {
-	return p.Out
+func (p *PPrinter) writeNewline() {
+	p.WriteByte('\n')
+	p.writePrefix()
+}
+
+func (p *PPrinter) writePrefix() {
+	if len(p.prefix) > 0 {
+		p.WriteString(p.prefix)
+	}
+}
+
+func (p *PPrinter) currentLineIndent(level int) string {
+	return strings.Repeat(p.indent, level)
+}
+
+func (p *PPrinter) nextLineIndent(level int) string {
+	return strings.Repeat(p.indent, level+1)
 }

@@ -3,11 +3,16 @@ package pp_test
 import (
 	"bytes"
 	"database/sql"
-	"fmt"
+	"reflect"
 	"testing"
 	"time"
 
 	"github.com/hlcfan/pp"
+)
+
+const (
+	defaultPrefix = ""
+	defaultIndent = " "
 )
 
 type person struct {
@@ -18,6 +23,7 @@ type person struct {
 	CreatedAt sql.NullTime
 	Addresses map[int]address
 	vehicles  []vehicle
+	NilField  *int
 }
 
 type vehicle struct {
@@ -28,10 +34,112 @@ type address struct {
 	PostalCode int
 }
 
+func TestPuts(t *testing.T) {
+	t.Run("print to stdout", func(t *testing.T) {
+		s := "im a string, Fran & Freddie's Diner	☺ "
+		pp.Puts(s)
+	})
+}
+
 func TestInspect(t *testing.T) {
-	t.Run("slice", func(t *testing.T) {
-		var output bytes.Buffer
-		pp.SetOutput(&output)
+	t.Run("print string", func(t *testing.T) {
+		var b bytes.Buffer
+		p := pp.New(&b, defaultPrefix, defaultIndent)
+		p.SetOutput(&b)
+
+		s := "im a string, Fran & Freddie's Diner	☺ "
+		p.Inspect(reflect.ValueOf(s), 0)
+
+		p.Flush()
+		got := b.String()
+		expected := "\"im a string, Fran & Freddie's Diner\\t☺ \"\n"
+
+		if got != expected {
+			t.Errorf("Expect: %v, but got: %v", expected, got)
+		}
+	})
+
+	t.Run("print slice", func(t *testing.T) {
+		var b bytes.Buffer
+		p := pp.New(&b, defaultPrefix, defaultIndent)
+		p.SetOutput(&b)
+
+		list := []string{"abc", "123"}
+		p.Inspect(reflect.ValueOf(list), 0)
+		p.Flush()
+
+		expected := "[\n \"abc\",\n \"123\",\n]\n"
+		got := b.String()
+		if got != expected {
+			t.Errorf("Expect: %v, but got: %v", expected, got)
+		}
+	})
+
+	t.Run("print struct", func(t *testing.T) {
+		var b bytes.Buffer
+		p := pp.New(&b, defaultPrefix, defaultIndent)
+		p.SetOutput(&b)
+
+		person := person{
+			ID:        1,
+			Name:      "alex",
+			Phone:     "12345678",
+			Graduated: true,
+			CreatedAt: sql.NullTime{
+				Valid: true,
+				Time: time.Date(
+					2009, 11, 17, 20, 34, 58, 651387237, time.UTC),
+			},
+			Addresses: map[int]address{
+				1: {PostalCode: 123},
+			},
+			vehicles: []vehicle{
+				{
+					plate: "CA-1234",
+				},
+			},
+		}
+
+		p.Inspect(reflect.ValueOf(person), 0)
+		p.Flush()
+
+		expected := "person {\n ID: 1,\n Name: \"alex\",\n Phone: \"12345678\",\n Graduated: true,\n CreatedAt: NullTime {\n  Time: Time {\n   wall: 651387237,\n   ext: 63394086898,\n   loc: nil,\n  },\n  Valid: true,\n },\n Addresses: {\n  1: address {\n   PostalCode: 123,\n  },\n },\n vehicles: [\n  vehicle {\n   plate: \"CA-1234\",\n  },\n ],\n NilField: nil,\n}\n"
+		got := b.String()
+		if got != expected {
+			t.Errorf("Expect: %v, but got: %v", expected, got)
+		}
+	})
+
+	t.Run("print map", func(t *testing.T) {
+		var b bytes.Buffer
+		p := pp.New(&b, defaultPrefix, defaultIndent)
+		p.SetOutput(&b)
+
+		m := map[string]string{"foo": "bar", "hello": "world"}
+		p.Inspect(reflect.ValueOf(m), 0)
+		p.Flush()
+
+		got := b.String()
+		expected1 := "{\n hello: \"world\",\n foo: \"bar\",\n}\n"
+		expected2 := "{\n foo: \"bar\",\n hello: \"world\",\n}\n"
+		allExpected := []string{expected1, expected2}
+
+		var met bool
+		for _, expected := range allExpected {
+			if got == expected {
+				met = true
+			}
+		}
+
+		if !met {
+			t.Errorf("Expect to be one of %v, but got: %v", allExpected, got)
+		}
+	})
+
+	t.Run("print slice of structs", func(t *testing.T) {
+		var b bytes.Buffer
+		p := pp.New(&b, defaultPrefix, defaultIndent)
+		p.SetOutput(&b)
 
 		people := []person{
 			{
@@ -69,27 +177,13 @@ func TestInspect(t *testing.T) {
 			},
 		}
 
-		pp.Inspect(people)
+		p.Inspect(reflect.ValueOf(people), 0)
+		p.Flush()
 
-		expected := "[]pp_test.person {\n\t{\n\t\tID:\t1,\n\t\tName:\talex,\n\t\tPhone:\t12345678,\n\t\tGraduated:\ttrue,\n\t\tCreatedAt:{\n\t\t\tTime:\t2009-11-17 20:34:58.651387237 +0000 UTC,\n\t\t\tValid:\ttrue,\n\t\t},\n\t\tAddresses: map[int]pp_test.address {\n\t\t\t1: {\n\t\t\t\tPostalCode:\t123,\n\t\t\t},\n\t\t},\n\t\tvehicles:[]pp_test.vehicle {\n\t\t\t{\n\t\t\t\tplate:\tCA-1234,\n\t\t\t},\n\t\t},\n\t},\n\t{\n\t\tID:\t2,\n\t\tName:\tbob,\n\t\tPhone:\t87654321,\n\t\tGraduated:\tfalse,\n\t\tCreatedAt:{\n\t\t\tTime:\t2021-06-05 20:34:58.651387237 +0800 +08,\n\t\t\tValid:\ttrue,\n\t\t},\n\t\tAddresses: map[int]pp_test.address {\n\t\t\t2: {\n\t\t\t\tPostalCode:\t876,\n\t\t\t},\n\t\t},\n\t\tvehicles:[]pp_test.vehicle {\n\t\t},\n\t},\n}\n"
-		got := output.String()
-		fmt.Printf("=Got: %#v\n", got)
-		fmt.Printf("=Expected: %#v\n", expected)
+		got := b.String()
+		expected := "[\n person {\n  ID: 1,\n  Name: \"alex\",\n  Phone: \"12345678\",\n  Graduated: true,\n  CreatedAt: NullTime {\n   Time: Time {\n    wall: 651387237,\n    ext: 63394086898,\n    loc: nil,\n   },\n   Valid: true,\n  },\n  Addresses: {\n   1: address {\n    PostalCode: 123,\n   },\n  },\n  vehicles: [\n   vehicle {\n    plate: \"CA-1234\",\n   },\n  ],\n  NilField: nil,\n },\n person {\n  ID: 2,\n  Name: \"bob\",\n  Phone: \"87654321\",\n  Graduated: false,\n  CreatedAt: NullTime {\n   Time: Time {\n    wall: 651387237,\n    ext: 63758493298,\n    loc: Location {\n     name: \"Local\",\n     zone: [\n      ,\n      ,\n      ,\n      ,\n      ,\n      ,\n      ,\n      ,\n     ],\n     tx: [\n      ,\n      ,\n      ,\n      ,\n      ,\n      ,\n      ,\n      ,\n     ],\n     extend: \"<+08>-8\",\n     cacheStart: 9223372036854775807,\n     cacheEnd: 9223372036854775807,\n     cacheZone: zone {\n      name: ,\n      offset: ,\n      isDST: ,\n     },\n    },\n   },\n   Valid: true,\n  },\n  Addresses: {\n   2: address {\n    PostalCode: 876,\n   },\n  },\n  vehicles: [\n  ],\n  NilField: nil,\n },\n]\n"
 		if got != expected {
-			t.Errorf("Expect: %s, but got: %s", expected, got)
-		}
-	})
-
-	t.Run("map", func(t *testing.T) {
-		var output bytes.Buffer
-		pp.SetOutput(&output)
-
-		m := map[string]string{"foo": "bar", "hello": "world"}
-		pp.Inspect(m)
-		got := output.String()
-		expected := "map[string]string {\n\tfoo: \tbar,\n\thello: \tworld,\n}\n"
-		if got != expected {
-			t.Errorf("Expect: %s, but got: %s", expected, got)
+			t.Errorf("Expect: %s, but got: %v", expected, got)
 		}
 	})
 }
