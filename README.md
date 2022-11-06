@@ -1,6 +1,6 @@
 # pp
 
-pp is a simple printer for Golang with color, currently use Rebecca colorscheme.
+A simple pretty printer with color support, currently using Rebecca colorscheme.
 
 ### Install
 
