@@ -1,24 +1,27 @@
 # pp
 
-pp is a simple printer for Golang.
+pp is a simple printer for Golang with color, currently use Rebecca colorscheme.
+
+### Install
+
+    go get github.com/hlcfan/pp
 
 ### Examples
 
 #### Map
 
-```
-import "github.com/hlcfan/pp"
-
+```go
 m := map[string]string{"foo": "bar", "hello": "world"}
 pp.Puts(m)
 ```
 
 *Output*
+
 ![screenshot](./screenshot2.png)
 
 #### Complex data
 
-```
+```go
 person := person{
   ID:        1,
   Name:      "alex",
@@ -39,8 +42,9 @@ person := person{
   },
 }
 
-pp.Puts(people)
+pp.Puts(person)
 ```
 
 *Output*
+
 ![screenshot](./screenshot1.png)
