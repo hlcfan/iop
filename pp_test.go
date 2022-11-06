@@ -38,7 +38,7 @@ func TestPuts(t *testing.T) {
 	t.Run("print to stdout", func(t *testing.T) {
 		person := person{
 			ID:        1,
-			Name:      "alex",
+			Name:      "alex 😊",
 			Phone:     "12345678",
 			Graduated: true,
 			CreatedAt: sql.NullTime{
@@ -59,7 +59,7 @@ func TestPuts(t *testing.T) {
 		pp.Puts(person)
 
 		m := map[string]string{"foo": "bar", "hello": "world"}
-		pp.Puts(m)
+		pp.PutsWithLabel(m, "DEBUG")
 	})
 }
 

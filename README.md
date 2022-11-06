@@ -6,6 +6,19 @@ pp is a simple printer for Golang with color, currently use Rebecca colorscheme.
 
     go get github.com/hlcfan/pp
 
+### Usage
+
+``` go
+import "github.com/hlcfan/pp"
+
+pp.Puts("I'm a string")
+// I'm a string
+
+pp.PutsWithLabel("I'm a string", "DEBUG")
+// DEBUG: I'm a string
+
+```
+
 ### Examples
 
 #### Map

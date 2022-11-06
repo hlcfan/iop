@@ -33,6 +33,7 @@ type PPrinter struct {
 	maxDepth   int
 	indent     string
 	prefix     string
+	label      string
 	putNewline bool
 	styler     Styler
 }
@@ -42,6 +43,18 @@ func Puts(variable any) {
 
 	p.Inspect(reflect.ValueOf(variable), 0)
 	p.writeNewline()
+
+	p.Flush()
+}
+
+func PutsWithLabel(variable any, label string) {
+	p := New(os.Stdout, defaultPrefix, defaultIndent)
+	p.label = label
+
+	p.WriteString(p.label + ": ")
+	p.Inspect(reflect.ValueOf(variable), 0)
+	p.writeNewline()
+
 	p.Flush()
 }
 
