@@ -30,14 +30,14 @@ pp.Puts(m)
 
 *Output*
 
-![screenshot](./screenshot2.png)
+![map](./screenshot_map.png)
 
 #### Complex data
 
 ```go
 person := person{
   ID:        1,
-  Name:      "alex",
+  Name:      "alex 🤖",
   Phone:     "12345678",
   Graduated: true,
   CreatedAt: sql.NullTime{
@@ -60,4 +60,4 @@ pp.Puts(person)
 
 *Output*
 
-![screenshot](./screenshot1.png)
+![struct](./screenshot_struct.png)

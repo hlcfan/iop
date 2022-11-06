@@ -1,8 +1,17 @@
 package pp
 
-import "reflect"
+import (
+	"fmt"
+	"reflect"
+	"time"
+)
 
 func (p *PPrinter) PrintStruct(v reflect.Value, level int) {
+	if v.Type().String() == "time.Time" {
+		p.printTime(v, level)
+		return
+	}
+
 	p.WriteString(p.styler.PrintIdentifier(v.Type().Name()))
 	p.WriteString(" {")
 	p.writeNewline()
@@ -21,4 +30,9 @@ func (p *PPrinter) PrintStruct(v reflect.Value, level int) {
 
 	p.WriteString(p.currentLineIndent(level))
 	p.WriteByte('}')
+}
+
+func (p *PPrinter) printTime(v reflect.Value, level int) {
+	s := fmt.Sprintf("%v", v.Interface().(time.Time))
+	p.WriteString(s)
 }
