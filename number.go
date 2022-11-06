@@ -6,9 +6,9 @@ import (
 )
 
 func (p *PPrinter) PrintUnsignedInteger(v reflect.Value) {
-	p.WriteString(strconv.FormatUint(v.Uint(), 10))
+	p.WriteString(p.styler.PrintNumber(strconv.FormatUint(v.Uint(), 10)))
 }
 
 func (p *PPrinter) PrintSignedInteger(v reflect.Value) {
-	p.WriteString(strconv.FormatInt(v.Int(), 10))
+	p.WriteString(p.styler.PrintNumber(strconv.FormatInt(v.Int(), 10)))
 }

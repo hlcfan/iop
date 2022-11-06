@@ -6,5 +6,5 @@ import (
 )
 
 func (p *PPrinter) PrintBool(v reflect.Value) {
-	p.WriteString(strconv.FormatBool(v.Bool()))
+	p.WriteString(p.styler.PrintBool(strconv.FormatBool(v.Bool())))
 }

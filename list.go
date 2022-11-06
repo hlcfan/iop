@@ -9,7 +9,7 @@ func (p *PPrinter) PrintList(v reflect.Value, level int) {
 	for i := 0; i < v.Len(); i++ {
 		p.WriteString(p.nextLineIndent(level))
 		p.Inspect(v.Index(i), level+1)
-		p.WriteByte(',')
+		p.WriteString(p.styler.PrintCharacter(","))
 		p.writeNewline()
 	}
 

@@ -7,6 +7,8 @@ import (
 	"reflect"
 	"strings"
 	"sync"
+
+	"github.com/hlcfan/pp/style"
 )
 
 var once sync.Once
@@ -17,6 +19,14 @@ const (
 	defaultIndent = " "
 )
 
+type Styler interface {
+	PrintIdentifier(string) string
+	PrintNumber(string) string
+	PrintString(string) string
+	PrintBool(string) string
+	PrintCharacter(string) string
+}
+
 type PPrinter struct {
 	*bufio.Writer
 	mutex      sync.Mutex
@@ -24,12 +34,14 @@ type PPrinter struct {
 	indent     string
 	prefix     string
 	putNewline bool
+	styler     Styler
 }
 
 func Puts(variable any) {
 	p := New(os.Stdout, defaultPrefix, defaultIndent)
 
 	p.Inspect(reflect.ValueOf(variable), 0)
+	p.writeNewline()
 	p.Flush()
 }
 
@@ -44,6 +56,7 @@ func New(w io.Writer, prefix, indent string) *PPrinter {
 			prefix:   prefix,
 			indent:   indent,
 			Writer:   bufio.NewWriter(w),
+			styler:   style.Rebecca,
 		}
 	})
 
@@ -87,10 +100,6 @@ func (p *PPrinter) Inspect(v reflect.Value, level int) {
 		p.Inspect(v.Elem(), level)
 	default:
 		p.WriteString(v.String())
-	}
-
-	if level == 0 {
-		p.writeNewline()
 	}
 }
 

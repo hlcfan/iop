@@ -1,7 +1,6 @@
 package pp
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -12,9 +11,10 @@ func (p *PPrinter) PrintMap(v reflect.Value, level int) {
 	for _, key := range v.MapKeys() {
 		p.WriteString(p.nextLineIndent(level))
 		v := v.MapIndex(key)
-		p.WriteString(fmt.Sprintf("%v: ", key.Interface()))
+		p.Inspect(key, level)
+		p.WriteString(p.styler.PrintCharacter(": "))
 		p.Inspect(v, level+1)
-		p.WriteByte(',')
+		p.WriteString(p.styler.PrintCharacter(","))
 		p.writeNewline()
 	}
 
